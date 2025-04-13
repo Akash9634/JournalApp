@@ -9,11 +9,12 @@ import java.time.LocalDateTime;
 
 @Document
 @Data  // @Data is equivalent to @Getter @Setter @NoArgsConstructor @AllArgsConstructor etc....
+@NoArgsConstructor
 public class JournalEntry {
 
     @Id
     private ObjectId id;
-
+    @NonNull
     private String title;
 
     private String content;
