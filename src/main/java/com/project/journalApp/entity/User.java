@@ -27,6 +27,7 @@ public class User {
 
     @DBRef //It creates a reference by storing just the ID of the referenced document
     private List<JournalEntry> journalEntries = new ArrayList<>();
+    private List<String> roles;
 
 
 }
