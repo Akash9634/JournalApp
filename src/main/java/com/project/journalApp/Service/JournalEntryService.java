@@ -29,7 +29,7 @@ public class JournalEntryService {
         journalEntry.setDate(LocalDateTime.now());
         JournalEntry saved = journalEntryRepository.save(journalEntry);
         user.getJournalEntries().add(saved);
-        userService.saveEntry(user);
+        userService.saveUser(user);
     }
 
     public void saveEntry(JournalEntry journalEntry){
@@ -47,7 +47,7 @@ public class JournalEntryService {
     public void deleteById(ObjectId id, String userName){
         User user = userService.findByUserName(userName);
         user.getJournalEntries().removeIf(x -> x.getId().equals(id)); //x -> x.getId().equals(id) , its a loop on x so when x.getid = id (we want to delete) it will remove it
-        userService.saveEntry(user); // updated user will get saved
+        userService.saveUser(user); // updated user will get saved
         journalEntryRepository.deleteById(id); // journal entry deleted from journal entry
     }
 }
