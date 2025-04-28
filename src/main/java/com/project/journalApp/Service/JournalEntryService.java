@@ -44,10 +44,21 @@ public class JournalEntryService {
         return journalEntryRepository.findById(id);
     }
 
-    public void deleteById(ObjectId id, String userName){
-        User user = userService.findByUserName(userName);
-        user.getJournalEntries().removeIf(x -> x.getId().equals(id)); //x -> x.getId().equals(id) , its a loop on x so when x.getid = id (we want to delete) it will remove it
-        userService.saveUser(user); // updated user will get saved
-        journalEntryRepository.deleteById(id); // journal entry deleted from journal entry
+    @Transactional
+    public boolean deleteById(ObjectId id, String userName){
+        boolean removed = false;
+        try{
+            User user = userService.findByUserName(userName);
+            removed = user.getJournalEntries().removeIf(x -> x.getId().equals(id)); //x -> x.getId().equals(id) , its a loop on x so when x.getid = id (we want to delete) it will remove it
+            if(removed){
+                userService.saveUser(user); // updated user will get saved
+                journalEntryRepository.deleteById(id); // journal entry deleted from journal entry
+            }
+        } catch(Exception e){
+            System.out.println(e);
+            throw new RuntimeException("An error occured while deleting the entry.", e);
+        }
+        return removed;
+
     }
 }
